@@ -18,11 +18,26 @@ try {
 
 if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     $prenom = htmlspecialchars($_GET['prenom']);
-    $nom = $_GET['nom'];
+    $nom = htmlspecialchars($_GET['nom']);
+
+    // Requête SQL préparée
+    $requete = $bdd->prepare("SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom");
+    $requete->execute([
+        'prenom' => $prenom,
+        'nom' => $nom
+    ]);
+
+    $ligne = $requete->fetch(PDO::FETCH_ASSOC);
+
+    if ($ligne) {
+        echo "ID trouvé : " . $ligne['Id'];
+    } else {
+        echo "Aucun élève trouvé avec ce prénom et ce nom.";
+    }
 
     // Au lieu d'utiliser une bdd, on met directement dans le code les identifiants
     // On a trois étudiants
-    if (($prenom == "Alban") &&($nom == "Campioni"))
+    /*if (($prenom == "Alban") &&($nom == "Campioni"))
     {
         echo "Salut Alban !";
     }
@@ -48,7 +63,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     $requete = 'SELECT Id FROM `eleves` WHERE Prenom LIKE ' . $prenom . ' AND Nom LIKE ' . $nom . ';';
     $resultat = $bdd->query($requete);
     $ligne = $resultat->fetch();  // On récupère la première ligne
-    echo $ligne;
+    echo $ligne;*/
     
 
 } else {
