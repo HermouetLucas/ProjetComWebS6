@@ -20,6 +20,8 @@ class Compte
     public function Connect()
     {
         $requete = 'SELECT Id FROM `Compte` WHERE Identifiant LIKE ' . $this->identifiant . ' AND Mdp LIKE ' . $this->mdp . ';';
+        $resultat = $this->bdd->query($requete);
+        $tab = $resultat->fetchall(PDO::FETCH_ASSOC);
     }
 }
 
