@@ -1,5 +1,6 @@
 <?php
 //variables de connexion
+include('bdd.php');
 $host = 'localhost';
 $dbname = 'gestion_de_notes_v2'; //Changer avec le nom de notre base de données
 $username = 'root'; //$username = 'root';
