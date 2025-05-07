@@ -13,7 +13,7 @@ class Notes
 
     }
 
-    public function ConnectNote($Note)
+    public function GetIdNotes($Note)
     {
         $this->note = $Note;
         $requete = 'SELECT Id FROM `Notes` WHERE Note LIKE ' . $this->Note .';';

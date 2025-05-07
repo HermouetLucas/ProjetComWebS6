@@ -1,5 +1,5 @@
 <?php
-class Profs
+class Eleves
 {
     private $prenom;
     private $nom;
@@ -14,11 +14,11 @@ class Profs
 
     }
 
-    public function ConnectProfs($Prenom, $Nom)
+    public function GetIdEleves($Prenom, $Nom)
     {
         $this->prenom = $Prenom;
         $this->nom = $Nom;
-        $requete = 'SELECT Id FROM `Profs` WHERE Prenom LIKE ' . $this->prenom . ' AND Nom LIKE ' . $this->nom . ';';
+        $requete = 'SELECT Id FROM `Eleves` WHERE Prenom LIKE ' . $this->prenom . ' AND Nom LIKE ' . $this->nom . ';';
         $resultat = $this->bdd->query($requete);
         $tab = $resultat->fetchall(PDO::FETCH_ASSOC);
     }
