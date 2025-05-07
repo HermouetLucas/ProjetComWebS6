@@ -7,12 +7,8 @@ class BDDHelper
     private $password = '';
     private $bdd;
 
-    function __construct($Host, $DbName, $Username, $Password)
+    function __construct()
     {
-        $this->host = $Host;
-        $this->dbname = $DbName;
-        $this->username = $Username;
-        $this->password = $Password;
         $this->bdd = new PDO(
             'mysql:host=' . $this->host . ';dbname=' . $this->dbname . ';charset=utf8',
             $this->username,
