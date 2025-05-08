@@ -36,7 +36,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
         $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleves = :idEleve");
         $requeteNotes->execute(['idEleve' => $eleve['Id']]);*/
 
-        $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom) ");
+        /*$requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom) ");
         $requeteNotes-> execute([
             'prenom' => $prenom,
             'nom' => $nom
@@ -46,10 +46,41 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
 
             echo "Notes de l'élève :<br>";
             foreach ($notes as $note) {
-                echo "- $note<br>";
+                $requeteMatiere = $bdd->prepare("SELECT Libelle FROM matieres WHERE Id LIKE (SELECT idMatiere FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom))");
+                $requeteMatiere -> execute([ //ligne où l'erreur est annoncée
+                    'prenom' => $prenom,
+                    'nom' => $nom
+                ]);
+                $matiere = $requeteMatiere->fetchall(PDO::FETCH_COLUMN);
+                echo "-".$matiere[0].": ".$note." <br>"; //Il n'y a qu'un seul élément dans le tableau matiere
             }
+        }*/
 
+        // Récupération des notes + matières en une seule requête
+        $requete = $bdd->prepare("
+        SELECT notes.Note, matieres.Libelle
+        FROM notes
+        INNER JOIN matieres ON notes.idMatiere = matieres.Id
+        WHERE notes.IdEleve = (
+            SELECT Id FROM eleves
+            WHERE Prenom = :prenom AND Nom = :nom
+            LIMIT 1)
+        ");
+
+        $requete->execute([
+        'prenom' => $prenom,
+        'nom' => $nom
+        ]);
+
+        $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($donnees) {
+            echo "Notes de l'élève :<br>";
+            foreach ($donnees as $ligne) {
+                echo "- " . $ligne['Libelle'] . " : " . $ligne['Note'] . "<br>";
+            }
         }
+    }
 
     else {
         echo "Erreur dans le nom ou le prénom.";
