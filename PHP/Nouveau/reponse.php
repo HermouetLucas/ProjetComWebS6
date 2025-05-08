@@ -1,6 +1,5 @@
 <?php
 //variables de connexion
-include('bdd.php');
 $host = 'localhost';
 $dbname = 'gestion_de_notes_v2'; //Changer avec le nom de notre base de données
 $username = 'root'; //$username = 'root';
@@ -8,7 +7,6 @@ $password = ''; //$password = '';
 try {
     $bdd = new PDO('mysql:host='. $host .';dbname='. $dbname .';charset=utf8',
     $username, $password);
-    echo 'connexion établie <br>' ; //vérifie la connexion
 } catch(Exception $e) {
     // Si erreur, tout arrêter
     die('Erreur : '. $e->getMessage());
@@ -21,20 +19,43 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     $nom = htmlspecialchars($_GET['nom']);
 
     // Requête SQL préparée
-    $requete = $bdd->prepare("SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom");
-    $requete->execute([
+    $requeteId = $bdd->prepare("SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom");
+    $requeteId->execute([
         'prenom' => $prenom,
         'nom' => $nom
     ]);
 
-    $ligne = $requete->fetch(PDO::FETCH_ASSOC);
+    $eleve = $requeteId->fetch(PDO::FETCH_ASSOC);
 
-    if ($ligne) {
-        echo "ID trouvé : " . $ligne['Id'];
-    } else {
-        echo "Aucun élève trouvé avec ce prénom et ce nom.";
+    if ($eleve) {
+        $idEleve = $eleve['Id'];
+        echo "Bienvenue ".$prenom." ".$nom.' !</br>';
+        echo "Identifiant : " . $idEleve."<br>";
+
+       /* // Requête préparée pour les notes
+        $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleves = :idEleve");
+        $requeteNotes->execute(['idEleve' => $eleve['Id']]);*/
+
+        $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom) ");
+        $requeteNotes-> execute([
+            'prenom' => $prenom,
+            'nom' => $nom
+        ]);
+
+        $notes = $requeteNotes->fetchAll(PDO::FETCH_COLUMN); // récupère juste la colonne 'Note'
+
+            echo "Notes de l'élève :<br>";
+            foreach ($notes as $note) {
+                echo "- $note<br>";
+            }
+
+        }
+
+    else {
+        echo "Erreur dans le nom ou le prénom.";
     }
-
+}
+    
     // Au lieu d'utiliser une bdd, on met directement dans le code les identifiants
     // On a trois étudiants
     /*if (($prenom == "Alban") &&($nom == "Campioni"))
@@ -66,9 +87,6 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     echo $ligne;*/
     
 
-} else {
-    echo "Erreur : données manquantes.";
-}
 
 
 ?>
