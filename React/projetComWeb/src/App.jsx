@@ -3,29 +3,22 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function Formulaire() {
+function Formulaire(props) {
   return (
     <>
-      <form action="reponse.php" method="get">
-        <label for="prenom">Entrez votre prénom : </label>
-        <input type="text" id="prenom" name="prenom" required /><br /><br />
+      <div className="login-container">
+        <h2 className="login-title">Connexion Étudiant</h2>
+        <form className="login-form" action="reponse.php" method="get">
+          <label for="prenom">Entrez votre prénom : </label>
+          <input type="text" id="prenom" name="prenom" required /><br /><br />
 
-        <label for="nom">Entrez votre nom : </label>
-        <input type="text" id="nom" name="nom" required /><br /><br /><br />
+          <label for="nom">Entrez votre nom : </label>
+          <input type="text" id="nom" name="nom" required /><br /><br /><br />
 
-        <button type="submit">Envoyer</button>
-      </form>
+          <button type="submit">Envoyer</button>
+        </form>
+      </div>
     </>)
-}
-
-function Notes(props) {
-  return (
-    <>
-      Note en Mathématique : {props.Mathematique}<br /><br />
-      Note en Informatique : {props.Informatique}<br /><br />
-      Note en Signal : {props.Signal}
-    </>
-  )
 }
 
 function App() {
@@ -33,8 +26,6 @@ function App() {
   return (
     <>
       <Formulaire />
-      <br /><br /><br />
-      <Notes Mathematique Informatique Signal />
     </>
   )
 }
