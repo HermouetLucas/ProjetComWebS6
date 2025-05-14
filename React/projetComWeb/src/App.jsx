@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function Formulaire(props) {
+function Formulaire() {
   return (
     <>
       <form action="reponse.php" method="get">
@@ -18,11 +18,23 @@ function Formulaire(props) {
     </>)
 }
 
+function Notes(props) {
+  return (
+    <>
+      Note en Mathématique : {props.Mathematique}<br /><br />
+      Note en Informatique : {props.Informatique}<br /><br />
+      Note en Signal : {props.Signal}
+    </>
+  )
+}
+
 function App() {
 
   return (
     <>
       <Formulaire />
+      <br /><br /><br />
+      <Notes Mathematique Informatique Signal />
     </>
   )
 }
