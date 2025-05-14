@@ -74,17 +74,8 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
 
         $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($donnees) {
-            echo "Notes de l'élève :<br>";
-            foreach ($donnees as $ligne) {
-                echo "- " . $ligne['Libelle'] . " : " . $ligne['Note'] . "<br>";
-            }
-        }
-    }
-
-    else {
-        echo "Erreur dans le nom ou le prénom.";
-    }
+        $json = json_encode($donnees, JSON_UNESCAPED_UNICODE);
+        echo $json;
 }
     
     // Au lieu d'utiliser une bdd, on met directement dans le code les identifiants
