@@ -21,7 +21,7 @@ function Formulaire(props) {
           <label>Entrez votre nom : </label>
           <input type="text" onChange={(e) => setNom(e.target.value)} required /><br /><br /><br />
 
-          <button type="submit" onClick={Click}>Envoyer</button>
+          <button type="button" onClick={Click}>Envoyer</button>
         </form>
       </div>
     </>)
@@ -41,16 +41,17 @@ function App() {
   const [prenom, setPrenom] = useState("");
   const ActionBoutonGet = (nom, prenom) => {
 
-    fetch(`localhost/ProjetS6/reponse.php/?prenom=${prenom}&nom=${nom}`)
-      .then(r => r.json())
-      .then(datas => {
-        setData(datas)
+    fetch(`http://localhost/ProjetS6/reponse.php/?prenom=${prenom}&nom=${nom}`)
+      .then(r => r.text())
+      .then(txt => {
+        var datas = JSON.parse(txt);
+        setData(datas.vals);
+        console.log(datas);
         setNom(nom);
         setPrenom(prenom);
-        console.log(nom)
-      })
+        // console.log(nom)
+      });
   }
-
   return (
     <>
       <Formulaire action={ActionBoutonGet} />

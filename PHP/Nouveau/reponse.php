@@ -1,6 +1,7 @@
 <?php
 //variables de connexion
-header(header: 'Content-Type: application/json');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
 $host = 'localhost';
 $dbname = 'projetwebs6'; //Changer avec le nom de notre base de données
 $username = 'root'; //$username = 'root';
@@ -33,7 +34,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
 
     if ($eleve) {
         $idEleve = $eleve['Id'];
-        
+
 
         /* // Requête préparée pour les notes
          $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleves = :idEleve");
@@ -78,7 +79,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
         $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
 
         $json = json_encode($donnees, JSON_UNESCAPED_UNICODE);
-        echo $json;
+        echo '{"vals":'.$json.'}';
     }
 }
 
