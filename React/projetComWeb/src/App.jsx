@@ -7,7 +7,7 @@ function Formulaire(props) {
   return (
     <>
       <div className="login-container">
-        <h2 className="login-title">Connexion Étudiant</h2>
+        <h2 className="login-title">Connexion Etudiant</h2>
         <form className="login-form" action="reponse.php" method="get">
           <label for="prenom">Entrez votre prénom : </label>
           <input type="text" id="prenom" name="prenom" required /><br /><br />
