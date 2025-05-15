@@ -3,9 +3,9 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 $host = 'localhost';
-$dbname = 'projetwebs6'; //Changer avec le nom de notre base de données
-$username = 'root'; //$username = 'root';
-$password = ''; //$password = '';
+$dbname = 'lhermouet'; //Changer avec le nom de notre base de données
+$username = 'lhermouet'; //$username = 'root';
+$password = 'GoldenPapapoufe1*'; //$password = '';
 try {
     $bdd = new PDO(
         'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8',
@@ -79,7 +79,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
         $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
 
         $json = json_encode($donnees, JSON_UNESCAPED_UNICODE);
-        echo '{"vals":'.$json.'}';
+        echo '{"vals":' . $json . '}';
     }
 }
 

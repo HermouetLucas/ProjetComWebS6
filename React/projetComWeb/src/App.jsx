@@ -41,12 +41,12 @@ function App() {
   const [prenom, setPrenom] = useState("");
   const ActionBoutonGet = (nom, prenom) => {
 
-    fetch(`http://localhost/ProjetS6/reponse.php/?prenom=${prenom}&nom=${nom}`)
+    fetch(`https://lhermouet.zzz.bordeaux-inp.fr/reponse.php/?prenom=${prenom}&nom=${nom}`)
       .then(r => r.text())
       .then(txt => {
         var datas = JSON.parse(txt);
         setData(datas.vals);
-        console.log(datas);
+        //console.log(datas);
         setNom(nom);
         setPrenom(prenom);
         // console.log(nom)
