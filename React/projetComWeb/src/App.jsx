@@ -81,21 +81,23 @@ function App() {
   return (
     <>
       <Formulaire action={ActionBoutonGet} />
-      {showNotes && (
-        <>
-          <br></br>
-          <div className='notes-container'>
+      <div className='notes-container'>
+        {showNotes && (
+          <>
+            <br></br>
+
             <h1>Note de {prenom} {nom}</h1><br></br>
             {data.map((item) => {
               return <Notes key={item.Libelle} libelle={item.Libelle} note={item.Note} />
             })}
-          </div>
-        </>
-      )
-      }
-      {(erreur) && (
-        <p>L'élève {prenom} {nom} n'existe pas.</p>
-      )}
+
+          </>
+        )
+        }
+        {(erreur) && (
+          <p>L'élève {prenom} {nom} n'existe pas.</p>
+        )}
+      </div>
     </>
   );
 }
