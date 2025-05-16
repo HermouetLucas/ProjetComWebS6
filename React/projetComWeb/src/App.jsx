@@ -21,7 +21,7 @@ function Formulaire(props) {
           <label>Entrez votre nom : </label>
           <input type="text" onChange={(e) => setNom(e.target.value)} required /><br /><br /><br />
 
-          <button type="button" onClick={Click}>Envoyer</button>
+          <button type="button" onClick={Click} disabled={!nom || !prenom}>Envoyer</button>
         </form>
       </div>
     </>)
@@ -36,31 +36,54 @@ function Notes(props) {
 }
 
 function App() {
-  const [data, setData] = useState([{ Note: "", Libelle: "" }]);
+  const [data, setData] = useState([]);
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
+  const [showNotes, setShowNotes] = useState(false);
+
   const ActionBoutonGet = (nom, prenom) => {
 
     fetch(`https://lhermouet.zzz.bordeaux-inp.fr/reponse.php/?prenom=${prenom}&nom=${nom}`)
       .then(r => r.text())
       .then(txt => {
         var datas = JSON.parse(txt);
-        setData(datas.vals);
-        //console.log(datas);
-        setNom(nom);
-        setPrenom(prenom);
-        // console.log(nom)
+        if (datas.vals && datas.vals.length > 0) {
+          setData(datas.vals);
+          //console.log(datas);
+          setNom(nom);
+          setPrenom(prenom);
+          // console.log(nom)
+          setShowNotes(true);
+        } else {
+          setData([]);
+          setShowNotes(false);
+
+        }
+      })
+      .catch(err => {
+        console.error("Erreur :", err);
+        setData([]);
+        setShowNotes(false);
       });
   }
   return (
     <>
       <Formulaire action={ActionBoutonGet} />
-      <h1>Note de {nom} {prenom}</h1><br></br>
-      {data.map((item) => {
-        return <Notes key={item.Libelle} libelle={item.Libelle} note={item.Note} />
-      })}
+      {showNotes && (
+        <>
+          <br></br>
+          <h1>Note de {prenom} {nom}</h1><br></br>
+          {data.map((item) => {
+            return <Notes key={item.Libelle} libelle={item.Libelle} note={item.Note} />
+          })}
+        </>
+      )
+      }
+      {(!showNotes && data.length === 0 && (nom || prenom)) && (
+        <p>Aucune note trouvée pour {prenom} {nom}.</p>
+      )}
     </>
-  )
+  );
 }
 
 export default App
