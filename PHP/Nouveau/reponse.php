@@ -1,7 +1,8 @@
 <?php
-//variables de connexion
+//header nécessaire
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
+//variables de connexion
 $host = 'localhost';
 $dbname = 'lhermouet'; //Changer avec le nom de notre base de données
 $username = 'lhermouet'; //$username = 'root';
@@ -13,67 +14,38 @@ try {
         $password
     );
 } catch (Exception $e) {
-    // Si erreur, tout arrêter
+    // si erreur, tout arrêter
     die('Erreur : ' . $e->getMessage());
 }
 
 
-
+//une fois que l'on est connecté à la bdd on vérifie l'url pour voir les paramètre
 if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     $prenom = htmlspecialchars($_GET['prenom']);
     $nom = htmlspecialchars($_GET['nom']);
-
-    // Requête SQL préparée
+    
+    // requête SQL préparée
     $requeteId = $bdd->prepare("SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom");
     $requeteId->execute([
         'prenom' => $prenom,
         'nom' => $nom
     ]);
-
+    //on envoie la requête pour récupérer l'ID de l'élève
     $eleve = $requeteId->fetch(PDO::FETCH_ASSOC);
 
     if ($eleve) {
         $idEleve = $eleve['Id'];
 
-
-        /* // Requête préparée pour les notes
-         $requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleves = :idEleve");
-         $requeteNotes->execute(['idEleve' => $eleve['Id']]);*/
-
-        /*$requeteNotes = $bdd->prepare("SELECT Note FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom) ");
-        $requeteNotes-> execute([
-            'prenom' => $prenom,
-            'nom' => $nom
-        ]);
-
-        $notes = $requeteNotes->fetchAll(PDO::FETCH_COLUMN); // récupère juste la colonne 'Note'
-
-            echo "Notes de l'élève :<br>";
-            foreach ($notes as $note) {
-                $requeteMatiere = $bdd->prepare("SELECT Libelle FROM matieres WHERE Id LIKE (SELECT idMatiere FROM notes WHERE IdEleve LIKE (SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom))");
-                $requeteMatiere -> execute([ //ligne où l'erreur est annoncée
-                    'prenom' => $prenom,
-                    'nom' => $nom
-                ]);
-                $matiere = $requeteMatiere->fetchall(PDO::FETCH_COLUMN);
-                echo "-".$matiere[0].": ".$note." <br>"; //Il n'y a qu'un seul élément dans le tableau matiere
-            }
-        }*/
-
-        // Récupération des notes + matières en une seule requête
+        // récupération des notes + matières en une seule requête
         $requete = $bdd->prepare("
         SELECT notes.Note, matieres.Libelle
         FROM notes
         INNER JOIN matieres ON notes.idMatiere = matieres.Id
-        WHERE notes.IdEleve = (
-            SELECT Id FROM eleves
-            WHERE Prenom = :prenom AND Nom = :nom
-            LIMIT 1)
+        WHERE notes.IdEleve = :id
         ");
-
+        //on récupère les notes 
         $requete->execute([
-            'prenom' => $prenom,
-            'nom' => $nom
+            'id' => $idEleve
         ]);
 
         $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
@@ -82,38 +54,5 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
         echo '{"vals":' . $json . '}';
     }
 }
-
-// Au lieu d'utiliser une bdd, on met directement dans le code les identifiants
-// On a trois étudiants
-/*if (($prenom == "Alban") &&($nom == "Campioni"))
-{
-    echo "Salut Alban !";
-}
-
-else if (($prenom == "Lucas") &&($nom == "Hermouet"))
-{
-    echo "Salut Lucas!";
-}
-
-else if (($prenom == "Lucia") &&($nom == "Dufond"))
-{
-    echo "Salut Lucia !";
-}
-
-else
-{
-    echo "L'identifiant ne correspond pas.";
-}
-
-$bddHelper = new BDDHelper(Host: 'localhost', DbName: 'ProjetWebS6', Username: 'root', Password: '');
-
-
-$requete = 'SELECT Id FROM `eleves` WHERE Prenom LIKE ' . $prenom . ' AND Nom LIKE ' . $nom . ';';
-$resultat = $bdd->query($requete);
-$ligne = $resultat->fetch();  // On récupère la première ligne
-echo $ligne;*/
-
-
-
 
 ?>
