@@ -56,8 +56,7 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
         echo '{"vals":' . $json . '}';
     } else {
         // Si aucun élève n'est trouvé, envoyer une réponse de type "not found"
-        $json = json_encode(['message' => 'Aucun eleve trouve pour ces parametres.']);
-        echo '{"vals":' . $json . '}';
+        echo '{"vals":[]}';
     }
 }
 

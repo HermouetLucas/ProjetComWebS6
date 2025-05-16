@@ -40,6 +40,7 @@ function App() {
   const [nom, setNom] = useState("");
   const [prenom, setPrenom] = useState("");
   const [showNotes, setShowNotes] = useState(false);
+  const [erreur, setErreur] = useState(false);
 
   const ActionBoutonGet = (nom, prenom) => {
 
@@ -47,19 +48,30 @@ function App() {
       .then(r => r.text())
       .then(txt => {
         var datas = JSON.parse(txt);
-        if (datas.vals && datas.vals.length > 0) {
-          setData(datas.vals);
-          //console.log(datas);
+
+        setData(datas.vals);
+        //console.log(datas);
+        console.log(showNotes)
+        console.log(data)
+        if (datas.vals.length > 0) {//pour une raison inconnue il faut continuer d'utiliser datas.vals içi
+          setShowNotes(true);
+          console.log("bon")
+          setErreur(false);
           setNom(nom);
           setPrenom(prenom);
           // console.log(nom)
-          setShowNotes(true);
-        } else {
-          setData([]);
-          setShowNotes(false);
+
 
         }
-      })
+        else {
+          setShowNotes(false);
+          console.log("pas bon")
+          setErreur(true);
+          setNom(nom);
+          setPrenom(prenom);
+        }
+      }
+      )
       .catch(err => {
         console.error("Erreur :", err);
         setData([]);
@@ -79,8 +91,8 @@ function App() {
         </>
       )
       }
-      {(!showNotes && data.length === 0 && (nom || prenom)) && (
-        <p>Aucune note trouvée pour {prenom} {nom}.</p>
+      {(erreur) && (
+        <p>L'élève {prenom} {nom} n'existe pas.</p>
       )}
     </>
   );
