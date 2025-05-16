@@ -17,15 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données : `gestion_de_notes_v2`
---
-
--- --------------------------------------------------------
-
---
--- Structure de la table `eleves`
---
 
 CREATE TABLE `eleves` (
   `Id` int(11) NOT NULL,
@@ -33,9 +24,6 @@ CREATE TABLE `eleves` (
   `Prenom` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `eleves`
---
 
 INSERT INTO `eleves` (`Id`, `Nom`, `Prenom`) VALUES
 (123, 'Campioni', 'Alban'),
@@ -44,18 +32,12 @@ INSERT INTO `eleves` (`Id`, `Nom`, `Prenom`) VALUES
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `matieres`
---
 
 CREATE TABLE `matieres` (
   `Id` int(11) NOT NULL,
   `Libelle` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `matieres`
---
 
 INSERT INTO `matieres` (`Id`, `Libelle`) VALUES
 (1, 'Informatique'),
@@ -64,10 +46,6 @@ INSERT INTO `matieres` (`Id`, `Libelle`) VALUES
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `notes`
---
-
 CREATE TABLE `notes` (
   `id` int(11) NOT NULL,
   `Note` decimal(15,3) DEFAULT NULL,
@@ -75,9 +53,6 @@ CREATE TABLE `notes` (
   `idMatiere` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `notes`
---
 
 INSERT INTO `notes` (`id`, `Note`, `IdEleve`, `idMatiere`) VALUES
 (1, 18.000, 123, 2),
@@ -87,37 +62,22 @@ INSERT INTO `notes` (`id`, `Note`, `IdEleve`, `idMatiere`) VALUES
 (5, 7.500, 789, 1),
 (6, 15.000, 456, 1);
 
---
--- Index pour les tables déchargées
---
 
---
--- Index pour la table `eleves`
---
 ALTER TABLE `eleves`
   ADD PRIMARY KEY (`Id`);
 
---
--- Index pour la table `matieres`
---
+
 ALTER TABLE `matieres`
   ADD PRIMARY KEY (`Id`);
 
---
--- Index pour la table `notes`
---
+
 ALTER TABLE `notes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_notes_matiere` (`idMatiere`),
   ADD KEY `fk_notes_eleves` (`IdEleve`);
 
---
--- Contraintes pour les tables déchargées
---
 
---
--- Contraintes pour la table `notes`
---
+
 ALTER TABLE `notes`
   ADD CONSTRAINT `fk_notes_eleves` FOREIGN KEY (`IdEleve`) REFERENCES `eleves` (`Id`),
   ADD CONSTRAINT `fk_notes_matiere` FOREIGN KEY (`idMatiere`) REFERENCES `matieres` (`Id`);
