@@ -24,35 +24,44 @@ if (isset($_GET['prenom']) && isset($_GET['nom'])) {
     $prenom = htmlspecialchars($_GET['prenom']);
     $nom = htmlspecialchars($_GET['nom']);
     
-    // requête SQL préparée
+    // Requête SQL préparée pour récupérer l'ID de l'élève
     $requeteId = $bdd->prepare("SELECT Id FROM eleves WHERE Prenom = :prenom AND Nom = :nom");
     $requeteId->execute([
         'prenom' => $prenom,
         'nom' => $nom
     ]);
-    //on envoie la requête pour récupérer l'ID de l'élève
+
+    // Récupération de l'élève
     $eleve = $requeteId->fetch(PDO::FETCH_ASSOC);
 
+    // Si l'élève est trouvé
     if ($eleve) {
         $idEleve = $eleve['Id'];
 
-        // récupération des notes + matières en une seule requête
+        // Récupération des notes et matières
         $requete = $bdd->prepare("
-        SELECT notes.Note, matieres.Libelle
-        FROM notes
-        INNER JOIN matieres ON notes.idMatiere = matieres.Id
-        WHERE notes.IdEleve = :id
+            SELECT notes.Note, matieres.Libelle
+            FROM notes
+            INNER JOIN matieres ON notes.idMatiere = matieres.Id
+            WHERE notes.IdEleve = :id
         ");
-        //on récupère les notes 
         $requete->execute([
             'id' => $idEleve
         ]);
 
         $donnees = $requete->fetchAll(PDO::FETCH_ASSOC);
 
+        // Retourner les résultats sous format JSON
         $json = json_encode($donnees, JSON_UNESCAPED_UNICODE);
+        echo '{"vals":' . $json . '}';
+    } else {
+        // Si aucun élève n'est trouvé, envoyer une réponse de type "not found"
+        $json = json_encode(['message' => 'Aucun eleve trouve pour ces parametres.']);
         echo '{"vals":' . $json . '}';
     }
 }
+
+
+
 
 ?>
