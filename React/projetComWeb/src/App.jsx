@@ -16,10 +16,10 @@ function Formulaire(props) {
         <h2 className="login-title">Connexion Étudiant</h2>
         <form className="login-form">
           <label>Entrez votre prénom : </label>
-          <input type="text" onChange={(e) => setPrenom(e.target.value)} required /><br /><br />
+          <input type="text" onChange={(e) => setPrenom(e.target.value)} required /><br />
 
           <label>Entrez votre nom : </label>
-          <input type="text" onChange={(e) => setNom(e.target.value)} required /><br /><br /><br />
+          <input type="text" onChange={(e) => setNom(e.target.value)} required /><br />
 
           <button type="button" onClick={Click} disabled={!nom || !prenom}>Envoyer</button>
         </form>
@@ -84,10 +84,12 @@ function App() {
       {showNotes && (
         <>
           <br></br>
-          <h1>Note de {prenom} {nom}</h1><br></br>
-          {data.map((item) => {
-            return <Notes key={item.Libelle} libelle={item.Libelle} note={item.Note} />
-          })}
+          <div className='notes-container'>
+            <h1>Note de {prenom} {nom}</h1><br></br>
+            {data.map((item) => {
+              return <Notes key={item.Libelle} libelle={item.Libelle} note={item.Note} />
+            })}
+          </div>
         </>
       )
       }
