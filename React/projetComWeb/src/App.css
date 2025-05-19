@@ -23,6 +23,15 @@ body {
   max-width: 400px;
 }
 
+.notes-container {
+  background-color: white;
+  padding: 3rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
 .login-title {
   text-align: center;
   font-size: 1.8rem;
@@ -65,58 +74,4 @@ body {
 
 .login-form button:hover {
   background-color: #1458a0;
-}
-
-
-
-/* Pour créer un bandeau après la connexion */
-.login-container-connected {
-  width: 100%;
-  background-color: rgb(233, 9, 9);
-  padding: 0.5rem 1rem;
-  box-shadow: 0 2px 8px rgba(245, 16, 16, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  overflow: hidden;
-}
-
-.login-form-connected {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.login-form-connected input {
-  flex: 1 1 0;
-  min-width: 80px;
-  max-width: 200px;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #1b8921;
-  border-radius: 0.3rem;
-}
-
-.login-form-connected button {
-  padding: 0.5rem 1rem;
-  white-space: nowrap;
-  background-color: #131b23;
-  color: rgb(206, 23, 23);
-  border: none;
-  border-radius: 0.3rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-form-connected input:focus {
-  border-color: #52ae21;
-  outline: none;
-}
-
-.login-title-connected {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #e15409;
-  margin-bottom: 1rem;
 }
