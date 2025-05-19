@@ -72,9 +72,9 @@ body {
 /* Pour créer un bandeau après la connexion */
 .login-container-connected {
   width: 100%;
-  background-color: white;
+  background-color: rgb(233, 9, 9);
   padding: 0.5rem 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(245, 16, 16, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -94,15 +94,15 @@ body {
   min-width: 80px;
   max-width: 200px;
   padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
+  border: 1px solid #1b8921;
   border-radius: 0.3rem;
 }
 
 .login-form-connected button {
   padding: 0.5rem 1rem;
   white-space: nowrap;
-  background-color: #4a90e2;
-  color: white;
+  background-color: #131b23;
+  color: rgb(206, 23, 23);
   border: none;
   border-radius: 0.3rem;
   font-weight: bold;
@@ -110,6 +110,13 @@ body {
 }
 
 .login-form-connected input:focus {
-  border-color: #4a90e2;
+  border-color: #52ae21;
   outline: none;
+}
+
+.login-title-connected {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #e15409;
+  margin-bottom: 1rem;
 }
